@@ -12,8 +12,8 @@ function App() {
 
   return (
     <div>
-      
-      <AddEmployeesComponent />
+      <HeaderComponent />
+      <ViewEmployeesComponent />
     </div>
   )
 }
