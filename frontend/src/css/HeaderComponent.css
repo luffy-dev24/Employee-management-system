@@ -3,4 +3,17 @@
     color: white;
     text-align: center;
     padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+header nav ul{
+    list-style-type:none;
+    display:flex;
+    gap:10px;
+}
+header nav ul li a{
+    color:white;
+    text-decoration:none;
 }

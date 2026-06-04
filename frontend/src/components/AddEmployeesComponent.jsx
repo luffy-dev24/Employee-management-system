@@ -11,6 +11,7 @@ function AddEmployeesComponent(){
     let ageRef = useRef();
     let salaryRef = useRef();
     let profilePicRef = useRef();
+    let [previewImage, setPreviewImage] = useState(null);
 
     let addEmployee= async ()=>{
         let inputdata={
@@ -29,12 +30,16 @@ function AddEmployeesComponent(){
         console.log(response);
     }
     
-
-
+    let setpreview = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setPreviewImage(URL.createObjectURL(file));
+        }
+    };
 
     return <div>
         <div className="add-employees-container">
-            <h1> Add Employees Component </h1>
+            <h1> Add Employees </h1>
             <div>
                 <label>
                     Employee Name:
@@ -53,10 +58,10 @@ function AddEmployeesComponent(){
                 <br />
                 <label>
                     Employee Profile Picture:
-                    <input type="file" placeholder="Upload profile picture" ref={profilePicRef} />
+                    <input type="file" placeholder="Upload profile picture" ref={profilePicRef} onChange={setpreview} />
                 </label>
                 <br />
-                <img src={profilePicRef.current ? URL.createObjectURL(profilePicRef.current.files[0]) : " "} alt="Profile Preview" width="100px" height="100px" />
+                {previewImage && <img src={previewImage} width="100px" height="100px" />}
                 <br />
                 <button onClick={addEmployee}>Add Employee</button>
             </div>
