@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'employees',
+    'userss',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 MEDIA_URL  = '/media/'
 MEDIA_ROOT = BASE_DIR/'media'
+
+
+AUTH_USER_MODEL = 'userss.User'
