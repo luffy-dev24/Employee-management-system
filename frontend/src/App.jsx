@@ -9,6 +9,7 @@ import AddEmployeesComponent from './components/AddEmployeesComponent'
 import {Routes, Route } from 'react-router-dom';
 import UpdateEmployeeComponent from './components/UpdateEmployeeComponent';
 import DeleteEmployeeComponent from './components/DeleteEmployeeComponent';
+import RegisterUserCompanyComponent from './components/RegisterUserCompanyComponent';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -16,6 +17,7 @@ function App() {
   return (
     <div>
       <Routes>
+        <Route path="/" element ={<RegisterUserCompanyComponent />} />
         <Route path='/view' element={<ViewEmployeesComponent />} />
         <Route path='/add' element={<AddEmployeesComponent />} />
         <Route path='/update/:id' element={<UpdateEmployeeComponent />} />
