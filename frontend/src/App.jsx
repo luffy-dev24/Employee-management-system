@@ -10,19 +10,31 @@ import {Routes, Route } from 'react-router-dom';
 import UpdateEmployeeComponent from './components/UpdateEmployeeComponent';
 import DeleteEmployeeComponent from './components/DeleteEmployeeComponent';
 import RegisterUserCompanyComponent from './components/RegisterUserCompanyComponent';
+import MainLayout from './components/MainLayout'
+import LoginComponent from './components/LoginComponent'
+import { createContext } from 'react'
+
+
+export const MyContext = createContext();
 
 function App() {
   const [count, setCount] = useState(0)
+  let [userLogin , setUserLogin] = useState(false)
 
   return (
     <div>
+      <MyContext.Provider value={[userLogin , setUserLogin]}>
       <Routes>
-        <Route path="/" element ={<RegisterUserCompanyComponent />} />
-        <Route path='/view' element={<ViewEmployeesComponent />} />
-        <Route path='/add' element={<AddEmployeesComponent />} />
-        <Route path='/update/:id' element={<UpdateEmployeeComponent />} />
-        <Route path='/delete/:id' element={<DeleteEmployeeComponent />} />
+        <Route path="/register" element ={<RegisterUserCompanyComponent />} />
+        <Route path="/login" element ={<LoginComponent />} />
+        <Route path="/main" element={<MainLayout/>}>
+          <Route path='view' element={<ViewEmployeesComponent />} />
+          <Route path='add' element={<AddEmployeesComponent />} />
+          <Route path='update/:id' element={<UpdateEmployeeComponent />} />
+          <Route path='delete/:id' element={<DeleteEmployeeComponent />} />
+        </Route>
       </Routes>
+      </MyContext.Provider>
     </div>
   )
 }

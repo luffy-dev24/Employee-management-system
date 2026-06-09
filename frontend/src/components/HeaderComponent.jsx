@@ -7,8 +7,8 @@ function HeaderComponent(){
             <p>Employee Management System </p>
             <nav>
                 <ul>
-                    <li><Link to="/view">View Employees</Link></li>
-                    <li><Link to="/add">Add Employee</Link></li>
+                    <li><Link to="/main/view">View Employees</Link></li>
+                    <li><Link to="/main/add">Add Employee</Link></li>
                 </ul>
             </nav>
         </header>

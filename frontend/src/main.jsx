@@ -7,7 +7,6 @@ import HeaderComponent from './components/HeaderComponent.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <HeaderComponent />
       <App />
     </BrowserRouter>
   </StrictMode>

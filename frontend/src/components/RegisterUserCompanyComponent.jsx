@@ -24,8 +24,9 @@ function RegisterUserCompanyComponent() {
         let url = "http://127.0.0.1:8000/userss/register/"
         try{
             let response = await axios.post(url, inpudata);
+            console.log(response)
             if(response.status === 201){
-                navigate("/view)")
+                navigate("/login")
             }else{
                 alert("Registration failed. Please try again.");
             }

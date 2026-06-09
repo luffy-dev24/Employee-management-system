@@ -4,10 +4,13 @@ import axios from 'axios';
 import EmployeeCard from './EmployeeCard';
 import "../css/ViewEmployeesComponent.css";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { MyContext } from '../App';
 
 function ViewEmployeesComponent(){
+    let [userLogin , setUserLogin] = useContext(MyContext)
     let [employees,setEmployees] = useState([]);
-    let imageUrl = "http://127.0.0.1:8000/"
+    let imageUrl = "http://127.0.0.1:8000/";
 
     let  nav = useNavigate();
 
@@ -27,6 +30,9 @@ function ViewEmployeesComponent(){
     }
 
     useEffect(()=>{
+        if(userLogin === false){
+            nav("/")
+        }
         getEmployees();
     },[])
     return <>

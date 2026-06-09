@@ -10,7 +10,7 @@ class RegisterUserAlongWithCompany(APIView):
         return Response({"message": "Welcome to the registration endpoint. Please send a POST request with your details to register."})
 
     def post(self, request):
-        company_name = request.data['company_name']
+        company_name = request.data['company']
         company_obj = CompanySerializer(data={'name': company_name})
         if company_obj.is_valid():
             company = company_obj.save()
@@ -27,6 +27,16 @@ class RegisterUserAlongWithCompany(APIView):
         user_serializer = UserSerializer(data=user_data)
         if user_serializer.is_valid():
             user_serializer.save()
+            
             return Response(user_serializer.data, status=201)
         else:
             return Response(user_serializer.errors, status=400)
+
+
+
+# views.py
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializer import EmailTokenObtainPairSerializer
+
+class EmailTokenObtainPairView(TokenObtainPairView):
+    serializer_class = EmailTokenObtainPairSerializer
