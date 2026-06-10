@@ -1,51 +1,76 @@
 import React from 'react';
-import { useState,useEffect } from 'react'
+import { useState, useEffect, useContext, createContext } from 'react'
 import axios from 'axios';
 import EmployeeCard from './EmployeeCard';
 import "../css/ViewEmployeesComponent.css";
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MyContext } from '../App';
 
-function ViewEmployeesComponent(){
-    let [userLogin , setUserLogin] = useContext(MyContext)
-    let [employees,setEmployees] = useState([]);
+export const EmployeeListContext = createContext();
+
+function ViewEmployeesComponent() {
+    let [userLogin, setUserLogin] = useContext(MyContext);
+    let [employees, setEmployees] = useState([]);
+    let [error, setError] = useState(null);
+    let [loading, setLoading] = useState(true);
     let imageUrl = "http://127.0.0.1:8000/";
+    let navigate = useNavigate();
 
-    let  nav = useNavigate();
-
-    let getEmployees = async ()=>{
-        let url = "http://127.0.0.1:8000/employees/add/";
-        let response = await axios.get(url);
-        console.log(response);
-        setEmployees(response.data);
-        
-    }
-
-    let navigateToUpdate = (id)=>{
-        nav("/update/" + id);
-    }
-    let navigateToDelete = (id)=>{
-        nav("/delete/" + id);
-    }
-
-    useEffect(()=>{
-        if(userLogin === false){
-            nav("/")
+    let getEmployees = async () => {
+        try {
+            let url = "http://127.0.0.1:8000/employees/add/";
+            let response = await axios.get(url);
+            setEmployees(response.data);
+        } catch (err) {
+            setError("Failed to fetch employees. Please try again.");
+        } finally {
+            setLoading(false);
         }
+    }
+
+    let navigateToUpdate = (id) => {
+        navigate("/main/update/" + id);
+    }
+
+    let navigateToDelete = (id) => {
+        navigate("/main/delete/" + id);
+    }
+
+    useEffect(() => {
+        
         getEmployees();
-    },[])
-    return <>
-        <h1>Employees Details</h1>
-        <div className="EmployeesContainer">
-            {employees.map((e, i)=>{
-                return <EmployeeCard key={i} name={e.name} age={e.age} salary={e.salary} 
-                profilePic={e.profile_pic ? imageUrl + e.profile_pic : ""} 
-                empId={e.id}
-                deletefunction={navigateToDelete}
-                updatefunction={navigateToUpdate} />
-            })}
-        </div>
-    </>
+    }, [])
+
+    return (
+        <>
+            <h1>Employees Details view page</h1>
+
+            <div className="EmployeesContainer">
+                {loading ? (
+                    <p>Loading...</p>
+                ) : error ? (
+                    <p className="error-msg">{error}</p>
+                ) : employees.length > 0 ? (
+
+                    // ✅ Wrap all cards inside one Provider
+                    <EmployeeListContext.Provider value={{
+                        employees,
+                        setEmployees,
+                        navigateToUpdate,
+                        navigateToDelete,
+                        imageUrl
+                    }}>
+                        {employees.map((e, i) => (
+                            <EmployeeCard key={i} empId={e.id} />
+                        ))}
+                    </EmployeeListContext.Provider>
+
+                ) : (
+                    <p>No employees found. Please add some employees.</p>
+                )}
+            </div>
+        </>
+    );
 }
+
 export default ViewEmployeesComponent;

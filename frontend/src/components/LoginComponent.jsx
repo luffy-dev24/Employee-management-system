@@ -3,27 +3,37 @@ import "../css/RegisterUserCompany.css"
 import { useRef } from "react";
 import { useNavigate} from "react-router-dom";
 import axios from "axios";
+import { useContext } from "react";
+import { MyContext } from "../App";
 
 function LoginComponent(){
     let emailRef = useRef();
     let passwordRef = useRef();
-    let  navigate = useNavigate();
+    let navigate = useNavigate();
+    let [userLogin, setUserLogin] = useContext(MyContext); // ✅ add this
 
-    let loginFunction = async ()=>{
-        let url = "http://127.0.0.1:8000/userss/login/";
-        let inputdata = {
-            email:emailRef.current.value,
-            password:passwordRef.current.value
+    let loginFunction = async () => {
+        try {
+            let url = "http://127.0.0.1:8000/userss/login/";
+            let inputdata = {
+                email: emailRef.current.value,
+                password: passwordRef.current.value
+            }
+            let response = await axios.post(url, inputdata);
+
+            localStorage.setItem("accessToken", response.data.access);
+            localStorage.setItem("refreshToken", response.data.refresh);
+            localStorage.setItem("role", response.data.role);
+            localStorage.setItem("email", response.data.email);
+            localStorage.setItem("userId", response.data.id);
+            console.log(response.data.role)
+
+            setUserLogin(true); 
+
+            navigate("/main");
+        } catch(error) {
+            console.error("Login failed:", error.response?.data);
         }
-        let response = await axios.post(url,inputdata)
-
-        localStorage.setItem("accessToken" , response.data.access);
-        localStorage.setItem("refreshToken", response.data.refresh);
-        localStorage.setItem("role", response.data.role);
-        localStorage.setItem("email",response.data.email);
-        localStorage.setItem("userId",response.data.id);
-
-        navigate("/main")
     };
 
     return (
