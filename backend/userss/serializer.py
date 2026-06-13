@@ -10,21 +10,28 @@ class CompanySerializer(serializers.ModelSerializer):
     
 
 class UserSerializer(serializers.ModelSerializer):
-    company = CompanySerializer(read_only=True) #nested serializer to show company details in user response
+    company = CompanySerializer(read_only=True)          # for GET response (output)
+    company_id = serializers.PrimaryKeyRelatedField(     # for POST input
+        queryset=Company.objects.all(),
+        source='company',                                # maps to 'company' field on model
+        write_only=True
+    )
 
     class Meta:
         model = User
-        fields = ['id', 'name', 'email', 'password', 'role', 'company']
-        read_only_fields = ['id']          # only id is read only
+        fields = ['id', 'name', 'email', 'password', 'role', 'company', 'company_id']
+        read_only_fields = ['id']
         extra_kwargs = {
-            'password': {'write_only': True}  # password never shown in response
+            'password': {'write_only': True}
         }
+
     def create(self, validated_data):
         return User.objects.create_user(
             name=validated_data["name"],
             email=validated_data["email"],
             role=validated_data["role"],
-            password=validated_data["password"]
+            password=validated_data["password"],
+            company=validated_data["company"]   # already a Company instance, not id
         )
 
 

@@ -18,7 +18,7 @@ function ViewEmployeesComponent() {
 
     let getEmployees = async () => {
         try {
-            let url = "http://127.0.0.1:8000/employees/add/";
+            let url = "http://127.0.0.1:8000/employees/getemployees/";
             let response = await axios.get(url);
             setEmployees(response.data);
         } catch (err) {

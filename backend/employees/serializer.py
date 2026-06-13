@@ -12,3 +12,4 @@ class EmployeesSerializer(serializers.ModelSerializer):
         if data['salary']<0:
             raise serializers.ValidationError("salary must be greater than 0")
         return data
+
